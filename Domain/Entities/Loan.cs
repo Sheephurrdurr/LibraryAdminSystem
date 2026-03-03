@@ -16,6 +16,7 @@ namespace Domain.Entities
         {
             ValidateLoanDate();
             ValidateReturnDate();
+            Id = Guid.NewGuid();
             Borrower = borrower;
             Book = book;
             LoanDate = loanDate;

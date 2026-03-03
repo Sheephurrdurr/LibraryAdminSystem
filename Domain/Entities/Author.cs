@@ -8,7 +8,7 @@ namespace Domain.Entities
     {
         public Guid Id { get; private set; }
         public string FullName { get; private set; }
-        public List<Book> Books { get; private set; }
+        public ICollection<Book> Books { get; private set; } = new List<Book>();
 
     }
 }
