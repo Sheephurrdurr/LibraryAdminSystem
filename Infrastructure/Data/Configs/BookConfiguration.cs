@@ -16,9 +16,30 @@ namespace Infrastructure.Data.Configs
             builder.Property(x => x.ISBN)
                 .IsRequired();
 
-            builder.HasMany(x => x.Authors)
+            builder.Property(x => x.Title)
+                .IsRequired()
+                .HasMaxLength(200);
+
+            builder.Property(x => x.Description)
+                .HasMaxLength(1000);
+
+            builder.Property(x => x.PagesAmount)
+                .IsRequired();
+
+            builder.Property(x => x.Genre)
+                .IsRequired()
+                .HasMaxLength(100);
+
+            builder.HasMany(x => x.Loans)
+                .WithOne(x => x.Book)
+                .HasForeignKey("BookId")
+                .OnDelete(DeleteBehavior.Cascade); // one to many relation, so we need foreign key "BookId" in "Loan" table
+
+            builder.HasMany(x => x.Author)
                 .WithMany(x => x.Books)
-                .UsingEntity(j => j.ToTable("BookAuthors"));
+                .UsingEntity(j => j.ToTable("BookAuthors")); // many to many relation, so we need  junction table "BookAuthors"
+
+            builder.Ignore(x => x.IsAvailable);
 
 
         }

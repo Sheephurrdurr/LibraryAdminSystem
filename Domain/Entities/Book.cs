@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Common;
 
 namespace Domain.Entities
 {
@@ -12,45 +13,20 @@ namespace Domain.Entities
         public string Description { get; private set; }
         public int PagesAmount  { get; private set; }
         public string Genre { get; private set; }
-        public Borrower Borrower { get; private set; }
         public ICollection<Author> Author { get; private set; } = new List<Author>();
+        public ICollection<Loan> Loans { get; private set; } = new List<Loan>();
+        public bool IsAvailable => !Loans.Any(l => l.ReturnDate >= DateTime.Now); // A book is available if it doesnt have active loans (loans with return date in the future)
 
-
-        public Book(int isbn, string title, string description, int pagesAmount, string genre, Borrower borrower, List<Author> authors)
+        private Book() { } // For EF Core   
+        public Book(int isbn, string title, string description, int pagesAmount, string genre, List<Author> authors)
         {
-           
+            Id = Guid.NewGuid();
+            ISBN = Guard.ValidatePositive(isbn, nameof(ISBN)); // Guard handles validation for positive integers and non-empty strings. See /common
+            Title = Guard.ValidateNotEmpty(title, nameof(Title));
+            Description = Guard.ValidateNotEmpty(description, nameof(Description));
+            PagesAmount = Guard.ValidatePositive(pagesAmount, nameof(PagesAmount));
+            Genre = Guard.ValidateNotEmpty(genre, nameof(Genre));
+            Author = Guard.NotNull(authors, nameof(authors));
         }
-
-        public void ValidateIsbn()
-        {
-            if (ISBN <= 0)
-            {
-                throw new InvalidOperationException("ISBN must be a positive integer.");
-            }
-        }
-        
-        public void ValidatePagesAmount()
-        {
-            if (PagesAmount <= 0)
-            {
-                throw new InvalidOperationException("Pages amount must be above 0.");
-            }
-        }
-
-        public void ValidateTitle()
-        {
-            if (string.IsNullOrWhiteSpace(Title))
-            {
-                throw new InvalidOperationException("Title cannot be empty.");
-            }
-        }
-         public void ValidateGenre()
-        {
-            if (string.IsNullOrWhiteSpace(Genre))
-            {
-                throw new InvalidOperationException("Genre cannot be empty.");
-            }
-        }   
-
     }
 }

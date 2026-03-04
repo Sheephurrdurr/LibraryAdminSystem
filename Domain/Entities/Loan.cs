@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Domain.Common;
 
 namespace Domain.Entities
 {
@@ -11,32 +12,44 @@ namespace Domain.Entities
         public Book Book { get; private set; }
         public DateTime LoanDate { get; private set; }
         public DateTime ReturnDate { get; private set; }
+        public bool IsOverdue => DateTime.Now > ReturnDate;
 
-        public Loan(Borrower borrower, Book book, DateTime loanDate, DateTime returnDate)
+        private Loan() { } // For EF Core
+        public Loan(Borrower borrower, Book book, DateTime loanDate)
         {
-            ValidateLoanDate();
-            ValidateReturnDate();
             Id = Guid.NewGuid();
-            Borrower = borrower;
-            Book = book;
-            LoanDate = loanDate;
-            ReturnDate = returnDate;
+            Borrower = Guard.NotNull(borrower, nameof(borrower));
+            Book = Guard.NotNull(book, nameof(book));
+            LoanDate = Guard.ValidateInFuture(loanDate, nameof(loanDate));
+            ReturnDate = LoanDate.AddDays(14); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
+        }
+        
+        public void BorrowBook()
+        {
+            if (!Book.IsAvailable)
+                throw new InvalidOperationException("Book is not available for borrowing.");
+            
         }
 
-        public void ValidateLoanDate()
+        public void ReturnBook()
         {
-            if (LoanDate < DateTime.Now)
-            {
-                throw new InvalidOperationException("Loan date must be in the future.");
-            }
+
         }
 
-        public void ValidateReturnDate()
+        public void ExtendLoan(int extraDays)
         {
-            if (ReturnDate < LoanDate)
-            {
-                throw new InvalidOperationException("Return date must be after the loan date.");
-            }
+            if (extraDays <= 0)
+                throw new ArgumentException("Extra days must be greater than zero.", nameof(extraDays));
+
+            if (IsOverdue)
+                throw new InvalidOperationException("Cannot extend an overdue loan.");
+
+            if (extraDays > 30)
+                throw new ArgumentException("Cannot extend loan for more than 30 days.", nameof(extraDays));
+
+            ReturnDate = ReturnDate.AddDays(extraDays);
         }
+
+
     }
 }

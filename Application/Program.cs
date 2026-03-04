@@ -1,2 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
+
+using var context = new LibraryContext();
+var queryService = new QueryService(context);
+
+await context.Database.MigrateAsync();
+await DbSeeder.SeedAsync(context);
+
+var activeLoans = await queryService.GetAllActiveLoans();

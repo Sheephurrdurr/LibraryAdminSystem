@@ -6,7 +6,8 @@ namespace Infrastructure.Data.Configs
     {
         public static void ConfigureSqLite(this DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=library.db");
+            var dbPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "library.db");
+            optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
     }
 }
