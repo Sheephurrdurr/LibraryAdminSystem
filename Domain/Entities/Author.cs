@@ -14,13 +14,13 @@ namespace Domain.Entities
         public int YearOfBirth { get; private set; }
         public string Biography { get; private set; }
         public readonly List< Book> _books = new List<Book>();
-        public IReadOnlyList<Book> Books => _books.AsReadOnly();
+        public IReadOnlyList<Book> Books => _books.AsReadOnly(); // Encapsulation, bro. Normal list can just be accessed and modified from outside, which we dont want. Even with private set.
 
-        private Author() { } // For EF Core 
+        private Author() { } //empty constructor for EFCore 
         public Author(string firstName, string LastName, string biography) 
         {
             Id = Guid.NewGuid();
-            Name = new FullName(firstName, LastName); // Validation happens in AuthorName
+            Name = new FullName(firstName, LastName); // Validation happens in AuthorName (Value Object)
             Biography = Guard.ValidateNotEmpty(biography, nameof(biography));
         }
 
@@ -32,7 +32,7 @@ namespace Domain.Entities
         public void AddBook(Book book)
         {
             Guard.NotNull(book, nameof(book));
-            Books?.Add(book);
+            _books?.Add(book); // Use the private list to add the book, IReadOnlyList is just to view the contents
         }
     }
 }

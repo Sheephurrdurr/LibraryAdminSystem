@@ -30,5 +30,7 @@ namespace Domain.Entities
             Genre = Guard.ValidateNotEmpty(genre, nameof(Genre));
             Author = Guard.NotNull(authors, nameof(authors));
         }
+
+
     }
 }

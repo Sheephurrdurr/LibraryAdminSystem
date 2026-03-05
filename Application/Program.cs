@@ -5,8 +5,33 @@ using Application;
 using var context = new LibraryContext();
 var queryService = new QueryService(context);
 
-await context.Database.MigrateAsync();
+await context.Database.MigrateAsync(); // Apparently gotta force it to run the migrations before seeding, otherwise seeding won't work.
 await DbSeeder.SeedAsync(context);
 
-var activeLoans = await queryService.GetAllActiveLoans();
+// Log db seeding result to console 
+Console.WriteLine($"Seeded {context.Books.Count()} books");
+Console.WriteLine($"Seeded {context.Authors.Count()} authors");
+Console.WriteLine($"Seeded {context.Borrowers.Count()} borrowers");
+Console.WriteLine($"Seeded {context.Loans.Count()} loans");
+
+// 3.1
+var loansWithBookAndBorrower = await queryService.GetLoansWBookTitleBorrowerName_IncludeSelect();
+foreach(var loan in loansWithBookAndBorrower)
+{
+    Console.WriteLine($"Borrower: {loan.BorrowerName}, Book: {loan.BookTitle}");
+}
+
+// 3.2
+var authorsBookCount = await queryService.GetAuthorsBookCount();
+foreach(var author in authorsBookCount)
+{
+    Console.WriteLine($"Author: {author.AuthorName}, Book Count: {author.BookCount}");
+}
+
+var complexJoinResult = await queryService.GetLoansComplex_include();
+Console.WriteLine($"Complex join results found: {complexJoinResult.Count()}");
+foreach (var result in complexJoinResult)
+{
+    Console.WriteLine($"Borrower Name: {result.BorrowerName}, Book Title: {result.BookTitle}, Author Name: {result.AuthorName}, Rented: {result.LoanDate}, Return due: {result.ReturnDate}");
+}
 

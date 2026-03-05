@@ -10,7 +10,7 @@ namespace Infrastructure.Data
     {
         public static async Task SeedAsync(LibraryContext context)
         {
-            if (!context.Authors.Any())
+            if (!context.Authors.Any()) // If there are any Authors already in the db, then dont do anything
             {
                 var author1 = new Author("F. Scott", "Fitzgerald", "American novelist and short story writer");
                 var author2 = new Author("Jane", "Austen", "English novelist known for her social commentary");
