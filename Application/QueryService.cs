@@ -16,12 +16,58 @@ namespace Application
             _context = context;
         }
 
+        // Del 2
         public async Task<List<Loan>> GetAllActiveLoans() // Trying to just get used to working with async ASAP
         {
             return await _context.Loans
-                .Include(x => x.Borrower)
-                .Include(x => x.Book)
                 .Where(x => x.ReturnDate == null)
+                .ToListAsync();
+        }
+        
+        public async Task<List<Book>> SortBooksByPublishingYear()
+        {
+            return await _context.Books
+                .OrderByDescending(x => x.PublishingYear)
+                .ToListAsync();
+        }
+
+        public async Task<List<object>> ShowBorrowerNameEmail() // Should've probably, maybe, perhaps made a DTO for this. But in my defense: I didn't want to. 
+        {
+            return await _context.Borrowers
+                .Select(x => new { x.Name, x.Email })
+                .ToListAsync<object>(); // object is DTO here. I just didnt create it explicitly.. or something to that effect.
+        }
+
+        public async Task<List<Book>> GetAllBooksNamedHarry()
+        {
+            return await _context.Books
+                .Where(x => x.Title.Contains("Harry"))
+                .ToListAsync();
+        }
+
+        public async Task<int> CountActiveLoans()
+        {
+            return await _context.Loans
+                .CountAsync(x => x.ReturnDate == null);
+        }
+
+        // Del 3
+        public class LoanDto
+        {
+            public string BorrowerName { get; set; }
+            public string BookTitle { get; set; }
+        }
+        public async Task<List<LoanDto>> GetLoansWBookTitleBorrowerName()
+        {
+            return await _context.Loans
+                .Include(l => l.Book)
+                .Include(l => l.Borrower)
+                .Select(l => new LoanDto
+                {
+                    BorrowerName = l.Borrower.Name.ToString(),
+                    BookTitle = l.Book.Title,
+
+                })
                 .ToListAsync();
         }
     }

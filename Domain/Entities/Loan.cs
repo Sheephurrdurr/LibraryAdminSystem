@@ -21,7 +21,7 @@ namespace Domain.Entities
             Borrower = Guard.NotNull(borrower, nameof(borrower));
             Book = Guard.NotNull(book, nameof(book));
             LoanDate = Guard.ValidateInFuture(loanDate, nameof(loanDate));
-            ReturnDate = LoanDate.AddDays(14); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
+            ReturnDate = LoanDate.AddDays(30); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
         }
         
         public void BorrowBook()

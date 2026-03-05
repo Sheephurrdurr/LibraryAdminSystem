@@ -10,8 +10,11 @@ namespace Domain.Entities
     {
         public Guid Id { get; private set; }
         public FullName Name { get; private set; }
+        public string Nationality { get; private set; }
+        public int YearOfBirth { get; private set; }
         public string Biography { get; private set; }
-        public ICollection<Book> Books { get; private set; } = new List<Book>();
+        public readonly List< Book> _books = new List<Book>();
+        public IReadOnlyList<Book> Books => _books.AsReadOnly();
 
         private Author() { } // For EF Core 
         public Author(string firstName, string LastName, string biography) 
