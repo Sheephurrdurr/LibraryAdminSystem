@@ -148,6 +148,7 @@ namespace Application
 
                           .AsNoTracking()
                           .ToListAsync();
+            
         }
         
         public async Task<List<ComplexJoinDto>> GetLoansComplex_include()
@@ -161,12 +162,33 @@ namespace Application
                 {
                     BorrowerName = l.Borrower.Name.ToString(),
                     BookTitle = l.Book.Title,
-                    AuthorName = string.Join(", ", l.Book.Author.Select(a => a.Name)), // If a book has multiple authors, we join their names with a comma. So much for that many-to-many relation.
+                    AuthorName = string.Join(", ", l.Book.Author.Select(a => a.Name)), // If a book has multiple authors, join their names with a comma. So much for that many-to-many relation.
                     LoanDate = l.LoanDate,
                     ReturnDate = l.ReturnDate
                 })
                 .ToListAsync();
         }
-        
+
+        public class BooksBorrowedMoreThanTwiceDto // Impeccable name
+        {
+            public string BookTitle { get; set; }
+            public int LoanCount { get; set; }
+        }
+        public async Task<List<BooksBorrowedMoreThanTwiceDto>> FilteredJoin()
+        {
+            return await _context.Loans
+                .AsNoTracking()
+                .Where(l => l.ReturnDate < DateTime.Now)
+                .GroupBy(l => l.Book.Id)
+                .Where(g => g.Count() > 2)
+                .Select (g => new BooksBorrowedMoreThanTwiceDto
+                {
+                    BookTitle = g.First().Book.Title, // Get the title of the book from the first loan in the group. This is a bit hacky, but it works.
+                    LoanCount = g.Count() // Count the number of loans in the group, which is the number of times the book has been borrowed.
+                })
+                .ToListAsync();
+        }
     }
 }
+
+// Loan Count is determined by the number of "finished" loans. Finished meaning ReturnDate has to be in the past for a loan to be valid for counting.

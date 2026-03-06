@@ -12,11 +12,11 @@ namespace Infrastructure.Data
         {
             if (!context.Authors.Any()) // If there are any Authors already in the db, then dont do anything
             {
-                var author1 = new Author("F. Scott", "Fitzgerald", "American novelist and short story writer");
-                var author2 = new Author("Jane", "Austen", "English novelist known for her social commentary");
-                var author3 = new Author("George", "Orwell", "English novelist and essayist, known for his critiques of totalitarianism");
-                var author4 = new Author("Ernest", "Hemingway", "American novelist and Nobel Prize winner known for his minimalist style");
-                var author5 = new Author("Virginia", "Woolf", "English writer and modernist pioneer");
+                var author1 = new Author("F. Scott", "Fitzgerald", 1896, "American", "American novelist and short story writer");
+                var author2 = new Author("Jane", "Austen", 1775, "British", "English novelist known for her social commentary");
+                var author3 = new Author("George", "Orwell", 1903, "British", "English novelist and essayist, known for his critiques of totalitarianism");
+                var author4 = new Author("Ernest", "Hemingway", 1899, "American", "American novelist and Nobel Prize winner known for his minimalist style");
+                var author5 = new Author("Virginia", "Woolf", 1882, "British", "English writer and modernist pioneer");
 
                 var authors = new List<Author> { author1, author2, author3, author4, author5 };
 

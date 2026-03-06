@@ -15,6 +15,7 @@ Console.WriteLine($"Seeded {context.Borrowers.Count()} borrowers");
 Console.WriteLine($"Seeded {context.Loans.Count()} loans");
 
 // 3.1
+Console.WriteLine("Loans with book title and borrower name:");
 var loansWithBookAndBorrower = await queryService.GetLoansWBookTitleBorrowerName_IncludeSelect();
 foreach(var loan in loansWithBookAndBorrower)
 {
@@ -22,12 +23,14 @@ foreach(var loan in loansWithBookAndBorrower)
 }
 
 // 3.2
+Console.WriteLine("Author with amount of books");
 var authorsBookCount = await queryService.GetAuthorsBookCount();
 foreach(var author in authorsBookCount)
 {
     Console.WriteLine($"Author: {author.AuthorName}, Book Count: {author.BookCount}");
 }
 
+// 3.3
 var complexJoinResult = await queryService.GetLoansComplex_include();
 Console.WriteLine($"Complex join results found: {complexJoinResult.Count()}");
 foreach (var result in complexJoinResult)
@@ -35,3 +38,10 @@ foreach (var result in complexJoinResult)
     Console.WriteLine($"Borrower Name: {result.BorrowerName}, Book Title: {result.BookTitle}, Author Name: {result.AuthorName}, Rented: {result.LoanDate}, Return due: {result.ReturnDate}");
 }
 
+// 3.4 -- DOESNT WORK
+Console.WriteLine("Book Title and Loan Count, only 2 or higher");
+var filteredJoinResult = await queryService.FilteredJoin();
+foreach(var result in filteredJoinResult)
+{
+    Console.WriteLine($"Book Title: {result.BookTitle}, Loan Count: {result.LoanCount}");
+}

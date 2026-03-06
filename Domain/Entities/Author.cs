@@ -17,10 +17,12 @@ namespace Domain.Entities
         public IReadOnlyList<Book> Books => _books.AsReadOnly(); // Encapsulation, bro. Normal list can just be accessed and modified from outside, which we dont want. Even with private set.
 
         private Author() { } //empty constructor for EFCore 
-        public Author(string firstName, string LastName, string biography) 
+        public Author(string firstName, string LastName, int yearOfBirth, string nationality, string biography) 
         {
             Id = Guid.NewGuid();
             Name = new FullName(firstName, LastName); // Validation happens in AuthorName (Value Object)
+            Nationality = Guard.ValidateNotEmpty(nationality, nameof(nationality));
+            YearOfBirth = Guard.ValidatePositive(yearOfBirth, nameof(yearOfBirth));
             Biography = Guard.ValidateNotEmpty(biography, nameof(biography));
         }
 

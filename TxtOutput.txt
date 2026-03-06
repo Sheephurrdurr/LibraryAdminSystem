@@ -1,0 +1,23 @@
+Seeding output fra Program.cs:
+Seeded 13 books
+Seeded 5 authors
+Seeded 4 borrowers
+Seeded 15 loans
+
+Complex Join output:
+Complex join results found: 15
+Borrower Name: Sofia Nielsen, Book Title: Tender Is the Night, Author Name: F. Scott Fitzgerald, Rented: 03/09/2026 00.00.00, Return due: 03/10/2026 00.00.00
+Borrower Name: Lucas Andersen, Book Title: Sense and Sensibility, Author Name: Jane Austen, Rented: 08/07/2026 00.00.00, Return due: 07/08/2026 00.00.00
+Borrower Name: Sofia Nielsen, Book Title: The Old Man and the Sea, Author Name: Ernest Hemingway, Rented: 07/12/2026 00.00.00, Return due: 06/01/2027 00.00.00
+Borrower Name: Lucas Andersen, Book Title: Tender Is the Night, Author Name: F. Scott Fitzgerald, Rented: 22/09/2026 00.00.00, Return due: 22/10/2026 00.00.00
+Borrower Name: Emma Christensen, Book Title: Emma, Author Name: Jane Austen, Rented: 14/05/2026 00.00.00, Return due: 13/06/2026 00.00.00
+Borrower Name: Magnus Jensen, Book Title: The Waves, Author Name: Virginia Woolf, Rented: 12/08/2026 00.00.00, Return due: 11/09/2026 00.00.00
+Borrower Name: Emma Christensen, Book Title: For Whom the Bell Tolls, Author Name: Ernest Hemingway, Rented: 25/07/2026 00.00.00, Return due: 24/08/2026 00.00.00
+Borrower Name: Magnus Jensen, Book Title: A Farewell to Arms, Author Name: Ernest Hemingway, Rented: 01/06/2026 00.00.00, Return due: 01/07/2026 00.00.00
+Borrower Name: Magnus Jensen, Book Title: Pride and Prejudice, Author Name: Jane Austen, Rented: 03/05/2026 00.00.00, Return due: 02/06/2026 00.00.00
+Borrower Name: Sofia Nielsen, Book Title: 1984, Author Name: George Orwell, Rented: 18/07/2026 00.00.00, Return due: 17/08/2026 00.00.00
+Borrower Name: Sofia Nielsen, Book Title: To the Lighthouse, Author Name: Virginia Woolf, Rented: 19/06/2026 00.00.00, Return due: 19/07/2026 00.00.00
+Borrower Name: Magnus Jensen, Book Title: The Great Gatsby, Author Name: F. Scott Fitzgerald, Rented: 15/04/2026 00.00.00, Return due: 15/05/2026 00.00.00
+Borrower Name: Emma Christensen, Book Title: Mrs Dalloway, Author Name: Virginia Woolf, Rented: 28/12/2026 00.00.00, Return due: 27/01/2027 00.00.00
+Borrower Name: Lucas Andersen, Book Title: Animal Farm, Author Name: George Orwell, Rented: 10/10/2026 00.00.00, Return due: 09/11/2026 00.00.00
+Borrower Name: Lucas Andersen, Book Title: 1984, Author Name: George Orwell, Rented: 17/10/2026 00.00.00, Return due: 16/11/2026 00.00.00
