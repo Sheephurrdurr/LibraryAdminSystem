@@ -4,7 +4,9 @@ Seeded 5 authors
 Seeded 4 borrowers
 Seeded 15 loans
 
-Complex Join output:
+
+Complex Join output, 3.3:
+
 Complex join results found: 15
 Borrower Name: Sofia Nielsen, Book Title: Tender Is the Night, Author Name: F. Scott Fitzgerald, Rented: 03/09/2026 00.00.00, Return due: 03/10/2026 00.00.00
 Borrower Name: Lucas Andersen, Book Title: Sense and Sensibility, Author Name: Jane Austen, Rented: 08/07/2026 00.00.00, Return due: 07/08/2026 00.00.00

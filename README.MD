@@ -22,5 +22,5 @@ At holde mig til scopet af opgaven.
 Intellisense forslår kode som "async Task", jeg tænker "det ser spændende ud" and now here we are.
 
 Opsætning af queries. 
-Jeg stoppede hvor jeg gjorde, pga. mængden af input jeg fik brug for fra Claude begyndte, at blive for højt (jeg kunne ikke selv) til. 
+Jeg stoppede hvor jeg gjorde, pga. mængden af input jeg fik brug for fra Claude begyndte, at blive for højt (jeg kunne ikke selv). 
 Og da meningen var at du skulle se hvor vores niveau var henne af, tænkte jeg at det var bedre at stoppe der, end at 'power' gennem det. Det kan jeg gøre, når den er afleveret. 
