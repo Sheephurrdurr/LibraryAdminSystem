@@ -177,18 +177,35 @@ namespace Application
         public async Task<List<BooksBorrowedMoreThanTwiceDto>> FilteredJoin()
         {
             return await _context.Loans
-                .AsNoTracking()
-                .Where(l => l.ReturnDate < DateTime.Now)
-                .GroupBy(l => l.Book.Id)
-                .Where(g => g.Count() > 2)
+                .AsNoTracking() // Readonly query
+                .GroupBy(l => l.Book.Id) // Group loans by book ID, so we can count how many times each book has been borrowed.
+                .Where(g => g.Count() >= 2) // Filter groups to only include those where the count of loans is greater than or equal to 2, meaning the book has been borrowed more than twice.
                 .Select (g => new BooksBorrowedMoreThanTwiceDto
                 {
                     BookTitle = g.First().Book.Title, // Get the title of the book from the first loan in the group. This is a bit hacky, but it works.
                     LoanCount = g.Count() // Count the number of loans in the group, which is the number of times the book has been borrowed.
                 })
+                .ToListAsync(); // Add to list... but do it asynchronously
+        }
+
+        public class AmountOfLoansPerMonthDto
+        {
+            public int Month { get; set; }
+            public int LoanCount { get; set; }
+        }
+        public async Task<List<AmountOfLoansPerMonthDto>> GetAmountOfLoansPerMonth()
+        {
+            return await _context.Loans
+                .AsNoTracking()
+                .GroupBy(l => l.LoanDate.Month) // Group loans by the month they were made
+                .Select(g => new AmountOfLoansPerMonthDto
+                {
+                    Month = g.Key, // The month is the key of the group
+                    LoanCount = g.Count() // Count the number of loans in each month
+                })
                 .ToListAsync();
         }
+
+
     }
 }
-
-// Loan Count is determined by the number of "finished" loans. Finished meaning ReturnDate has to be in the past for a loan to be valid for counting.

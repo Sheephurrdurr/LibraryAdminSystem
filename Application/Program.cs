@@ -38,10 +38,22 @@ foreach (var result in complexJoinResult)
     Console.WriteLine($"Borrower Name: {result.BorrowerName}, Book Title: {result.BookTitle}, Author Name: {result.AuthorName}, Rented: {result.LoanDate}, Return due: {result.ReturnDate}");
 }
 
-// 3.4 -- DOESNT WORK
+// 3.4 
 Console.WriteLine("Book Title and Loan Count, only 2 or higher");
+
 var filteredJoinResult = await queryService.FilteredJoin();
-foreach(var result in filteredJoinResult)
+Console.WriteLine($"Found: {filteredJoinResult.Count}");
+foreach (var result in filteredJoinResult)
 {
     Console.WriteLine($"Book Title: {result.BookTitle}, Loan Count: {result.LoanCount}");
+}
+
+Console.WriteLine(); // Whitespace in tha console
+
+// 4.1
+Console.WriteLine("Amount of books loaned per month");
+var booksLoanedInMonth = await queryService.GetAmountOfLoansPerMonth();
+foreach (var result in booksLoanedInMonth)
+{
+    Console.WriteLine($"Month: {result.Month}, Loan Count: {result.LoanCount}");
 }
