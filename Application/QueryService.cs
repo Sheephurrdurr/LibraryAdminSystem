@@ -206,6 +206,24 @@ namespace Application
                 .ToListAsync();
         }
 
+        public class AveragingOfLoansPerReturnedBookDto 
+        {
+            public string BookTitle { get; set; }
+            public int DaysAmount { get; set; }
+        }
+
+        public async Task<List<AveragingOfLoansPerReturnedBookDto>> GetLoanPeriodAverage()
+        {
+            return await _context.Loans
+                .AsNoTracking()
+                .GroupBy(l => l.Book.Title)
+                .Select(g => new AveragingOfLoansPerReturnedBookDto
+                {
+                    BookTitle = g.Key,
+                    DaysAmount = g.Count()
+                })
+                .ToListAsync();
+        }
 
     }
 }
