@@ -11,9 +11,9 @@ namespace Domain.Entities
         public Borrower Borrower { get; private set; }
         public Book Book { get; private set; }
         public DateTime LoanDate { get; private set; }
-        public DateTime ReturnDate { get; private set; } // !!CHANGE!! probably DueDate is a better name, since this emplies the date the book actually was returned. Which it is.
+        public DateTime DueDate { get; private set; }
         public bool IsReturned { get; private set; }
-        public bool IsOverdue => DateTime.Now > ReturnDate;
+        public bool IsOverdue => DateTime.Now > DueDate;
 
         private Loan() { } // For EF Core
         public Loan(Borrower borrower, Book book, DateTime loanDate)
@@ -22,7 +22,7 @@ namespace Domain.Entities
             Borrower = Guard.NotNull(borrower, nameof(borrower));
             Book = Guard.NotNull(book, nameof(book));
             LoanDate = Guard.ValidateInFuture(loanDate, nameof(loanDate));
-            ReturnDate = LoanDate.AddDays(30); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
+            DueDate = LoanDate.AddDays(30); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
             IsReturned = true;
         }
         
@@ -49,7 +49,7 @@ namespace Domain.Entities
             if (extraDays > 30)
                 throw new ArgumentException("Cannot extend loan for more than 30 days.", nameof(extraDays));
 
-            ReturnDate = ReturnDate.AddDays(extraDays);
+            DueDate = DueDate.AddDays(extraDays);
         }
 
 

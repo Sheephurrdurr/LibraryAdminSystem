@@ -57,3 +57,10 @@ foreach (var result in booksLoanedInMonth)
 {
     Console.WriteLine($"Month: {result.Month}, Loan Count: {result.LoanCount}");
 }
+
+Console.WriteLine("Average loan period (in days)");
+var averageLoanPeriods = await queryService.GetLoanPeriodAverage();
+foreach (var result in averageLoanPeriods)
+{
+    Console.WriteLine($"Titel: {result.BookTitle}, Gennensnitlig låneperiode: {result.AverageLoanPeriodInDays} dage.");
+}

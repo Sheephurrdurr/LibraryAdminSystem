@@ -171,7 +171,7 @@ namespace Application
 
         public class BooksBorrowedMoreThanTwiceDto // Impeccable name
         {
-            public string BookTitle { get; set; }
+            public string? BookTitle { get; set; }
             public int LoanCount { get; set; }
         }
         public async Task<List<BooksBorrowedMoreThanTwiceDto>> FilteredJoin()
@@ -208,22 +208,26 @@ namespace Application
 
         public class AveragingOfLoansPerReturnedBookDto 
         {
-            public string BookTitle { get; set; }
-            public int DaysAmount { get; set; }
+            public string? BookTitle { get; set; }
+            public double AverageLoanPeriodInDays { get; set; }
         }
 
         public async Task<List<AveragingOfLoansPerReturnedBookDto>> GetLoanPeriodAverage()
         {
-            return await _context.Loans
-                .AsNoTracking()
-                .GroupBy(l => l.Book.Title)
-                .Select(g => new AveragingOfLoansPerReturnedBookDto
-                {
-                    BookTitle = g.Key,
-                    DaysAmount = g.Count()
-                })
-                .ToListAsync();
-        }
+            var loans = await _context.Loans // Start by making the list of stuff that we need to find the average from
+                  .AsNoTracking() // Make sure query doesn't track and change stuff, we're just looking 
+                  .Where(l => l.ReturnDate != null) // Only sort loans where the returnDate isn't null
+                  .Include(l => l.Book) // Get all the books that fit the criteria from above
+                  .ToListAsync(); // Throw results into a list, async
 
+            return loans // returns the List objects we just queried 
+                .GroupBy(l => l.Book.Title) // Group them up by title, so all books with same title gets grouped together
+                .Select(g => new AveragingOfLoansPerReturnedBookDto // Throw queried data into dto
+                {
+                    BookTitle = g.Key, 
+                    AverageLoanPeriodInDays = g.Average(l => (l.ReturnDate - l.LoanDate).Days) // Average calculation here
+                })
+                .ToList();
+        }
     }
 }
