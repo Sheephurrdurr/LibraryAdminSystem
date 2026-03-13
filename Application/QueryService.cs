@@ -22,7 +22,7 @@ namespace Application
         public async Task<List<Loan>> GetAllActiveLoans() // Trying to just get used to working with async ASAP
         {
             return await _context.Loans // Promise to return a list of loansm when the query is done
-                .Where(x => !x.IsReturned)
+                .Where(x => x.DueDate == null)
                 .ToListAsync();
         }
         
@@ -118,7 +118,7 @@ namespace Application
             public string BookTitle { get; set; }
             public string AuthorName { get; set; }
             public DateTime LoanDate { get; set; }
-            public DateTime ReturnDate { get; set; }
+            public DateTime DueDate { get; set; }
         }
 
         public async Task<List<ComplexJoinDto>> GetLoansComplex_join()
@@ -143,7 +143,7 @@ namespace Application
                               BookTitle = book.Title,
                               AuthorName = author.Name.ToString(),
                               LoanDate = loan.LoanDate,
-                              ReturnDate = loan.ReturnDate
+                              DueDate = loan.DueDate
                           })
 
                           .AsNoTracking()
@@ -164,7 +164,7 @@ namespace Application
                     BookTitle = l.Book.Title,
                     AuthorName = string.Join(", ", l.Book.Author.Select(a => a.Name)), // If a book has multiple authors, join their names with a comma. So much for that many-to-many relation.
                     LoanDate = l.LoanDate,
-                    ReturnDate = l.ReturnDate
+                    DueDate = l.DueDate
                 })
                 .ToListAsync();
         }

@@ -12,7 +12,8 @@ namespace Domain.Entities
         public Book Book { get; private set; }
         public DateTime LoanDate { get; private set; }
         public DateTime DueDate { get; private set; }
-        public bool IsReturned { get; private set; }
+        public DateTime? ReturnDate { get; private set; }
+        public bool IsReturned => ReturnDate != null;
         public bool IsOverdue => DateTime.Now > DueDate;
 
         private Loan() { } // For EF Core
@@ -23,19 +24,22 @@ namespace Domain.Entities
             Book = Guard.NotNull(book, nameof(book));
             LoanDate = Guard.ValidateInFuture(loanDate, nameof(loanDate));
             DueDate = LoanDate.AddDays(30); // Is set when object is created, and never changed. IsOverdue is calculated based on this value, and the current date.
-            IsReturned = true;
+         
         }
         
         public void BorrowBook() 
         {
             if (!Book.IsAvailable)
                 throw new InvalidOperationException("Book is not available for borrowing.");
-            // Abstraction ...
+            
         }
 
         public void ReturnBook()
         {
-            IsReturned = true;
+            if (IsReturned)
+                throw new InvalidOperationException("Book has been returned.");
+
+            ReturnDate = DateTime.Now;
         }
 
         public void ExtendLoan(int extraDays)

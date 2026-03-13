@@ -16,6 +16,9 @@ namespace Infrastructure.Data.Configs
             builder.Property(x => x.LoanDate)
                 .IsRequired();
 
+            builder.Property(x => x.DueDate)
+                .IsRequired();
+
             builder.Property(x => x.ReturnDate)
                 .IsRequired();
 
